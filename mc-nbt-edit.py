@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#mc-nbt-edit 0.4 by sakisds <sakisds@gmx.com>
+#mc-nbt-edit 0.4.1
 #Uses the NBT library by Thomas Woolford <woolford.thomas@gmail.com>
 #Based on the NBT specifications by Markus Persson
 
@@ -8,28 +8,28 @@ from nbt.nbt import *
 import sys, os, json
 
 def help(): #Prints help
-	print "mc-nbt-edit 0.4 by sakisds <sakisds@gmx.com>\n\nUsage: mc-nbt-edit file tag datatype value\n"
-	print "Possible datatypes: byte, int, float, long, string, short, double.\n Lists are not yet supported.\n\n\nOptions:"
-	print "--help: Displays this message and then exit."
-	print "--print: Prints tree inside the given NBT file and then exit."
+	print("mc-nbt-edit 0.4.1\n\nUsage: mc-nbt-edit file tag datatype value\n")
+	print("Possible datatypes: byte, int, float, long, string, short, double.\n Lists are not yet supported.\n\n\nOptions:")
+	print("--help: Displays this message and then exit.")
+	print("--print: Prints tree inside the given NBT file and then exit.")
 	exit()
 
 def complain(): #Complains on wrong options.
-	print "Invalid options. Try --help."
+	print("Invalid options. Try --help.")
 	exit(1)
 
 def loadfile(filepath): #Loads the NBT file
 	try:
 		return NBTFile(filepath,'rb')
 	except Exception:
-		print "Could not open file "+sys.argv[1]
+		print("Could not open file "+sys.argv[1])
 		exit(1)
 
 def savefile(nbt):
 	try:
 		nbt.write_file()
 	except Exception:
-		print "Could not save buffer to disk. Chances are discarded."
+		print("Could not save buffer to disk. Chances are discarded.")
 		exit(1)
 
 def settag(name, dtype, value): #Sets wanted tag
@@ -44,7 +44,7 @@ def settag(name, dtype, value): #Sets wanted tag
 		tag.value = float(value)
 	elif dtype == "long":
 		tag = TAG_Long(name)
-		tag.value = long(value)
+		tag.value = int(value)
 	elif dtype == "string":
 		tag = TAG_String(name)
 		tag.value = value
@@ -55,13 +55,13 @@ def settag(name, dtype, value): #Sets wanted tag
 		tag = TAG_Double(sys.argv)
 		tag.value = float(value)
 	else:
-		print "Unknown tag data type. "
+		print("Unknown tag data type. ")
 		exit()
 	tag.name = name
 	return tag
 
 def printtag(tag):
-	print tag.name+":"+tag
+	print(tag.name+":"+tag)
 
 #Decide about printing help or complaining
 printing = False
@@ -89,14 +89,14 @@ nbt = loadfile(sys.argv[1])
 #Print if needed
 if printing:
 	if len(sys.argv) == 3:
-		print nbt.pretty_tree()
+		print(nbt.pretty_tree())
 	elif len(sys.argv) == 4:
 		path = sys.argv[2].split('.')
 		item = nbt
 		while len(path) > 0:
 			item = item.__getitem__(path[0])
 			path.pop(0)
-		print item.pretty_tree()
+		print(item.pretty_tree())
 	exit()
 
 #Parse tag
