@@ -29,7 +29,7 @@ def savefile(nbt):
 	try:
 		nbt.write_file()
 	except Exception:
-		print("Could not save buffer to disk. Chances are discarded.")
+		print("Could not save buffer to disk. Changes are discarded.")
 		exit(1)
 
 def settag(name, dtype, value): #Sets wanted tag
